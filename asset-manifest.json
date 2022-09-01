@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.bfa106a6.css",
+    "main.js": "/static/js/main.a5d595e3.js",
+    "static/js/787.4b24f717.chunk.js": "/static/js/787.4b24f717.chunk.js",
+    "static/media/dzenan.png": "/static/media/dzenan.9aaa2d23b290fb7ce0f9.png",
+    "index.html": "/index.html",
+    "main.bfa106a6.css.map": "/static/css/main.bfa106a6.css.map",
+    "main.a5d595e3.js.map": "/static/js/main.a5d595e3.js.map",
+    "787.4b24f717.chunk.js.map": "/static/js/787.4b24f717.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bfa106a6.css",
+    "static/js/main.a5d595e3.js"
+  ]
+}
