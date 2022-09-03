@@ -126,7 +126,7 @@ const experiences = {
         {
             role: 'DevOps engineer',// Here Add Company Name
             date: 'October 2022 – Present',
-            country: 'Elca Cloud Services - Lausanne, Swizerland',
+            country: 'Elca Cloud Services - Lausanne, Switzerland',
         },
         {
             role: 'Network and automation consultant engineer (internship)',

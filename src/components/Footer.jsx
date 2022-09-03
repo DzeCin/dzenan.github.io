@@ -8,7 +8,7 @@ const Footer = (props) => {
         <footer style={Style} className="mt-auto py-3 text-center ">
             <Container>
                 {props.children}
-                <span className="font-monospace"> Made by Dzenan </span> <a href="https://github.com/DzeCin" className="fab fa-github"/>
+                <span className="font-monospace"> Made by Dzenan </span>
             </Container>
         </footer>
     );
