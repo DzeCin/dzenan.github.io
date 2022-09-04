@@ -28,9 +28,12 @@ const Navigation = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" className="toggler"/>
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="navbar-nav mr-auto">
+                    {process.env.REACT_APP_ENABLE_BLOG === "TRUE" ?
                     <Nav.Link as={NavLink} to="/blog">
                         Blog
                     </Nav.Link>
+                        :
+                        ""}
                     <Nav.Link href="/#projects">
                         Projects
                     </Nav.Link>

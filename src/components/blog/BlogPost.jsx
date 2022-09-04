@@ -38,7 +38,7 @@ const BlogPost = () => {
                 const location = window.location.pathname.split('/')
                 const id = location.reverse()[0]
                 let apiClient = new ApiClient()
-                apiClient.basePath = "http://localhost:8080"
+                apiClient.basePath = process.env.REACT_APP_BLOG_API_URL
                 let api = new PostsApi(apiClient)
                 api.getPost(id, callback);
             }

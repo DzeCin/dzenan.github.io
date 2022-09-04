@@ -16,7 +16,7 @@ const dummyProject = {
 const API = "https://api.github.com";
 
 const Project = ({ heading, username, length, specfic }) => {
-  const allReposAPI = `${API}/users/${username}/repos?sort=updated&direction=asc`;
+  const allReposAPI = `${API}/users/${username}/repos?sort=updated&direction=desc&per_page=`+ length;
   const specficReposAPI = `${API}/repos/${username}`;
   const dummyProjectsArr = new Array(length + specfic.length).fill(
     dummyProject
@@ -30,7 +30,7 @@ const Project = ({ heading, username, length, specfic }) => {
       // getting all repos
       const response = await axios.get(allReposAPI);
       // slicing to the length
-      repoList = [...response.data.slice(0, length)];
+      repoList = [...response.data];
       // adding specified repos
       try {
         for (let repoName of specfic) {
@@ -40,13 +40,12 @@ const Project = ({ heading, username, length, specfic }) => {
       } catch (error) {
         console.error(error.message);
       }
-      // setting projectArray
       // TODO: remove the duplication.
       setProjectsArray(repoList);
     } catch (error) {
       console.error(error.message);
     }
-  }, [allReposAPI, length, specfic, specficReposAPI]);
+  }, [allReposAPI, specfic, specficReposAPI]);
 
   useEffect(() => {
     fetchRepos();
