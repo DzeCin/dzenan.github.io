@@ -7,7 +7,6 @@ import Experience from "./Experience";
 import Project from "./Project";
 import Skills from "./Skills";
 
-
 const Home = (props) => {
 
     let styles = {

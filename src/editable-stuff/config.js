@@ -42,7 +42,7 @@ const certifications = {
         {
             name: "Microsoft Certified: Azure Administrator Associate",
             logo: "https://images.credly.com/size/680x680/images/336eebfc-0ac3-4553-9a67-b402f491f185/azure-administrator-associate-600x600.png",
-            link: "https://www.credly.com/earner/earned/badge/9219f300-40a9-4a33-aa47-6a7d1e36ca37/embedded"
+            link: "https://www.credly.com/badges/9219f300-40a9-4a33-aa47-6a7d1e36ca37/embedded"
         },
 
     ]

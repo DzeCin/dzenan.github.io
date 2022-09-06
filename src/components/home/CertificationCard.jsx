@@ -17,7 +17,7 @@ const CertificationCard = ({value}) => {
 
         <Col md={mdSize}>
 
-            <a href={value.credly_id ? `https://www.credly.com/badges/${value.credly_id}/embedded` : "#"}>
+            <a style={{color: "inherit", textDecoration: "inherit"}} href={value.link ? value.link : "#"}>
                 <Card className="card shadow-lg p-5 mb-1 bg-white rounded">
                     <Card.Img variant="bottom" src={value.logo}/>
                     <Card.Body>
