@@ -232,7 +232,6 @@ const handleFetch = async (event) => {
     const originalRequest = event.request;
 
     if(originalRequest.url.includes(keepAliveJsonFilename) ){
-        console.log('AMKZDNAZMDKNAMZDKNAZ');
         event.respondWith(keepAliveAsync(event));
         return;
     }
