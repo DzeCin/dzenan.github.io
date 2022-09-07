@@ -17,7 +17,7 @@ const MainBody = React.forwardRef(
                 <div id="stars"/>
 
                 <Container className="text-center">
-                    <h1 className="display-1">
+                    <h1 style={{animation: "fadeIn 4s"}} className="display-1">
                         {title}
                     </h1>
                     <Typist>
@@ -25,7 +25,7 @@ const MainBody = React.forwardRef(
                             {message}
                         </div>
                     </Typist>
-                    <div className="p-5">
+                    <div style={{animation: "fadeIn 4s"}} className="p-5">
                         {icons.map((icon, index) => (
                             <a
                                 key={`social-icon-${index}`}

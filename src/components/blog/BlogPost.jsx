@@ -53,7 +53,7 @@ const BlogPost = () => {
 
 
         return (
-            <Container>
+            <Container style={{animation: "fadeIn 2.5s"}}>
                 <div style={{minHeight: 'calc(100vh - 11em)'}} className="container-lg mt-5">
 
                     {(post && !loading && (

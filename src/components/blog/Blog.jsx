@@ -1,18 +1,24 @@
 import React, {useEffect, useState} from "react";
-import {ApiClient, PostsApi, Post} from "js-api-blog-client";
+import {ApiClient, PostsApi} from "js-api-blog-client";
 import {PostClass} from "./PostClass";
 import {NavLink} from "react-router-dom";
-import {Card} from "react-bootstrap";
+import {Button, Card} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css';
+import {useOidcIdToken} from "@axa-fr/react-oidc";
+import {roles} from "../../auth/config";
 
 const Blog = (props) => {
-
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true)
+    const {idToken, idTokenPayload} = useOidcIdToken();
+    let isAdmin = false;
 
+    if (idToken) {
+        isAdmin = idTokenPayload.roles.includes(roles.admin)
+    }
     let callback = function (error, data, response) {
         if (error) {
             console.error(error);
@@ -34,14 +40,13 @@ const Blog = (props) => {
             apiClient.basePath = process.env.REACT_APP_BLOG_API_URL
             let api = new PostsApi(apiClient)
             api.getPosts(callback);
-
         }
         , [])
 
     return (
         <div style={{minHeight: 'calc(100vh - 11em)'}} className="container-lg mt-5 bg-blue">
-
             <p className="h1 text-center">Blog</p>
+            {isAdmin && <Button>New Post</Button>}
             <Row>
                 {loading && <Skeleton animation={"wave"} count={5}/>
                 }
@@ -77,7 +82,7 @@ const BlogCard = (
         return (
             <Col md={6} className={"p-3"}>
 
-                <Card>
+                <Card style={{animation: "fadeIn 1.5s"}}>
                     <NavLink to={id} style={{color: "inherit", textDecoration: "inherit"}}>
                         <Card.Body>
                             <Card.Title>
@@ -91,7 +96,12 @@ const BlogCard = (
                             </Card.Text>
                             <Card.Footer>
                                 <small className={"text-muted sm"}> {tags.toString()}</small>
+                                <div style={{textAlign: "right"}}>
+                                    <Button style={{marginRight:"4px"}} className={"btn-danger"}>Delete</Button>
+                                    <Button className={"btn-secondary"}>Edit</Button>
+                                </div>
                             </Card.Footer>
+
                         </Card.Body>
                     </NavLink>
                 </Card>

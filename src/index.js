@@ -11,14 +11,15 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
     <React.StrictMode>
-            <App/>
-            <Footer>
-                    <GetInTouch
-                        heading={getInTouch.heading}
-                        message={getInTouch.message}
-                        email={getInTouch.email}
-                    />
-            </Footer>
+        <App/>
+        <Footer>
+            <GetInTouch
+                heading={getInTouch.heading}
+                message={getInTouch.message}
+                email={getInTouch.email}
+            />
+        </Footer>
+
     </React.StrictMode>
 );
 
