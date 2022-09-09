@@ -10,6 +10,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import {useOidcIdToken} from "@axa-fr/react-oidc";
 import {roles} from "../../auth/config";
 
+
 const Blog = (props) => {
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true)
@@ -19,18 +20,20 @@ const Blog = (props) => {
     if (idToken) {
         isAdmin = idTokenPayload.roles.includes(roles.admin)
     }
-    let callback = function (error, data, response) {
+
+    let callbackGetPosts = function (error, data, response) {
         if (error) {
             console.error(error);
-        } else {
+        } else if (data.length === 0){
+            setLoading(false)
+        }
+        else {
             let postsArray = []
             for (const elmt of data) {
                 let post = new PostClass(elmt.id, elmt.header, elmt.title, elmt.author, elmt.content, elmt.tags, elmt.dateCreated, elmt.dateUpdated)
                 postsArray.push(post)
             }
-
             setLoading(false)
-
             setPosts(postsArray)
         }
     };
@@ -39,9 +42,10 @@ const Blog = (props) => {
             let apiClient = new ApiClient()
             apiClient.basePath = process.env.REACT_APP_BLOG_API_URL
             let api = new PostsApi(apiClient)
-            api.getPosts(callback);
+            api.getPosts(callbackGetPosts);
         }
         , [])
+
 
     return (
         <div style={{minHeight: 'calc(100vh - 11em)'}} className="container-lg mt-5 bg-blue">
@@ -79,10 +83,29 @@ const BlogCard = (
             id, tags, dateCreated, title, header, author
         }
     ) => {
+        let cal = function (error, data, response) {
+            if (error) {
+                console.error(error);
+            } else {
+                console.log("POST   -" + title + "-   DELETED")
+            }
+        };
+
+
+        function deletePost() {
+            let apiClient = new ApiClient()
+            apiClient.basePath = process.env.REACT_APP_BLOG_API_URL
+            let oAuth = apiClient.authentications['oAuth'];
+            oAuth.accessToken = '';
+            let api = new PostsApi(apiClient)
+            api.deletePost(id, cal);
+        }
+
         return (
             <Col md={6} className={"p-3"}>
 
                 <Card style={{animation: "fadeIn 1.5s"}}>
+                    <Button onClick={deletePost}> dekete</Button>
                     <NavLink to={id} style={{color: "inherit", textDecoration: "inherit"}}>
                         <Card.Body>
                             <Card.Title>
@@ -97,7 +120,8 @@ const BlogCard = (
                             <Card.Footer>
                                 <small className={"text-muted sm"}> {tags.toString()}</small>
                                 <div style={{textAlign: "right"}}>
-                                    <Button style={{marginRight:"4px"}} className={"btn-danger"}>Delete</Button>
+                                    <Button style={{marginRight: "4px"}} className={"btn-danger"}
+                                            >Delete</Button>
                                     <Button className={"btn-secondary"}>Edit</Button>
                                 </div>
                             </Card.Footer>
