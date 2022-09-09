@@ -47,18 +47,18 @@ const Navigation = () => {
                     <Nav.Link href="/#aboutme">
                         About me
                     </Nav.Link>
-                    {oidcUserLoadingState === OidcUserStatus.Unauthenticated &&
+                    {oidcUserLoadingState === OidcUserStatus.Unauthenticated && process.env.REACT_APP_ENABLE_BLOG === "TRUE" &&
                         <Nav.Link onClick={() => login('/')}>
                             Login
                         </Nav.Link>
                     }
-                    {oidcUserLoadingState === OidcUserStatus.Loading &&
+                    {oidcUserLoadingState === OidcUserStatus.Loading && process.env.REACT_APP_ENABLE_BLOG === "TRUE" &&
                         <Nav.Link>
                             Loading user data
                         </Nav.Link>
                     }
 
-                    {oidcUserLoadingState === OidcUserStatus.Loaded &&
+                    {oidcUserLoadingState === OidcUserStatus.Loaded && process.env.REACT_APP_ENABLE_BLOG === "TRUE" &&
                         <Nav.Link onClick={() => logout('/')}>
                             Logout
 
