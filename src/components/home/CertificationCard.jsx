@@ -8,7 +8,6 @@ const CertificationCard = ({value}) => {
 
     if (Object.keys(value).length > 4) {
         mdSize = 3
-        console.log(mdSize)
     } else {
         mdSize = 12 / Object.keys(value).length
     }

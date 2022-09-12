@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {ApiClient, PostsApi} from "js-api-blog-client";
 import {PostClass} from "./PostClass";
 import {NavLink} from "react-router-dom";
-import {Button, Card} from "react-bootstrap";
+import {Button, Card, Form, Toast, ToastContainer} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Skeleton from "react-loading-skeleton";
@@ -24,10 +24,9 @@ const Blog = (props) => {
     let callbackGetPosts = function (error, data, response) {
         if (error) {
             console.error(error);
-        } else if (data.length === 0){
+        } else if (data.length === 0) {
             setLoading(false)
-        }
-        else {
+        } else {
             let postsArray = []
             for (const elmt of data) {
                 let post = new PostClass(elmt.id, elmt.header, elmt.title, elmt.author, elmt.content, elmt.tags, elmt.dateCreated, elmt.dateUpdated)
@@ -51,6 +50,11 @@ const Blog = (props) => {
         <div style={{minHeight: 'calc(100vh - 11em)'}} className="container-lg mt-5 bg-blue">
             <p className="h1 text-center">Blog</p>
             {isAdmin && <Button>New Post</Button>}
+            <Form.Group style={{margin: "2%"}}>
+                <Form.Control type="search" id="form1" placeholder={"Search a post by tags."}/>
+
+            </Form.Group>
+
             <Row>
                 {loading && <Skeleton animation={"wave"} count={5}/>
                 }
@@ -62,7 +66,8 @@ const Blog = (props) => {
                                 key={value.id}
                                 id={value.id}
                                 title={value.title}
-                                dateCreated={value.dateUpdated}
+                                dateCreated={value.dateCreated}
+                                dateUpdated={value.dateUpdated}
                                 tags={value.tags}
                                 author={value.author}
                                 header={value.header}
@@ -80,14 +85,48 @@ const Blog = (props) => {
 
 const BlogCard = (
         {
-            id, tags, dateCreated, title, header, author
+            id, tags, dateCreated, dateUpdated, title, header, author
         }
     ) => {
+
+        function getCurrentHour() {
+            const date = new Date();
+            const seconds = date.getSeconds();
+            const minutes = date.getMinutes();
+            const hours = date.getHours();
+            return ('0' + hours).slice(-2) + ":" + ('0' + minutes).slice(-2) + ":" + ('0' + seconds).slice(-2)
+        }
+
+        const [notification, setNotification] = useState({show: false, variant: "", msg: "", hour: ""});
+
+        const closeNotification = () => setNotification({show: false, variant: "", msg: "", hour: ""})
+
         let cal = function (error, data, response) {
-            if (error) {
-                console.error(error);
+            if (response.status === 401) {
+                setNotification({
+                    show: true,
+                    variant: "Danger",
+                    msg: "You are not authorized to do this !",
+                    hour: getCurrentHour()
+                })
+            } else if (response.status === 404) {
+                setNotification({
+                    show: true,
+                    variant: "Warning",
+                    msg: "The post you are trying to delete do not exist.",
+                    hour: getCurrentHour()
+                })
+            } else if (response.status === 200) {
+                setNotification({show: true, variant: "Success", msg: "Post successfully deleted", hour: getCurrentHour()})
+
             } else {
-                console.log("POST   -" + title + "-   DELETED")
+                setNotification({
+                    show: true,
+                    variant: "Danger",
+                    msg: "An unexpected error happened.",
+                    hour: getCurrentHour()
+                })
+
             }
         };
 
@@ -102,35 +141,52 @@ const BlogCard = (
         }
 
         return (
-            <Col md={6} className={"p-3"}>
+            <>
+                <ToastContainer position={"top-end"} className={"position-fixed"}>
+                    <Toast show={notification.show} onClose={closeNotification} delay={5000} autohide
+                           bg={notification.variant.toLowerCase()}>
+                        <Toast.Header>
+                            <img
+                                src="holder.js/20x20?text=%20"
+                                className="rounded me-2"
+                                alt=""
+                            />
+                            <strong className="me-auto">Notification</strong>
+                            <small>{notification.hour}</small>
+                        </Toast.Header>
+                        <Toast.Body>{notification.msg}</Toast.Body>
+                    </Toast>
+                </ToastContainer>
+                <Col md={6} className={"p-3"}>
 
-                <Card style={{animation: "fadeIn 1.5s"}}>
-                    <Button onClick={deletePost}> dekete</Button>
-                    <NavLink to={id} style={{color: "inherit", textDecoration: "inherit"}}>
+                    <Card style={{animation: "fadeIn 1.5s"}}>
                         <Card.Body>
-                            <Card.Title>
-                                <h4>{title}</h4>
-                            </Card.Title>
-                            <Card.Subtitle>
-                                <i style={{color: "#999"}}>by {author} on 24/04/2022</i>
-                            </Card.Subtitle>
-                            <Card.Text>
-                                <i className={"lead"}>{header}</i>
-                            </Card.Text>
+                            <NavLink to={id} style={{color: "inherit", textDecoration: "inherit"}}>
+                                <Card.Title>
+                                    <h4>{title}</h4>
+                                </Card.Title>
+                                <Card.Subtitle style={{margin: "1%"}}>
+                                    <i style={{color: "#999"}}>by {author} on {dateCreated.toLocaleDateString("en-US").toString()} (updated on {dateUpdated.toLocaleDateString("en-US").toString()})</i>
+                                </Card.Subtitle>
+                                <Card.Text style={{marginBottom: "2%"}}>
+                                    <i className={"lead"}>{header}</i>
+                                </Card.Text>
+                            </NavLink>
                             <Card.Footer>
                                 <small className={"text-muted sm"}> {tags.toString()}</small>
                                 <div style={{textAlign: "right"}}>
-                                    <Button style={{marginRight: "4px"}} className={"btn-danger"}
-                                            >Delete</Button>
+                                    <Button style={{marginRight: "4px"}} onClick={deletePost}
+                                            className={"btn-danger"}>Delete</Button>
                                     <Button className={"btn-secondary"}>Edit</Button>
                                 </div>
                             </Card.Footer>
 
                         </Card.Body>
-                    </NavLink>
-                </Card>
 
-            </Col>
+                    </Card>
+
+                </Col>
+            </>
         );
     }
 ;

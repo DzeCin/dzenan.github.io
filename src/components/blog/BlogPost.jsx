@@ -59,7 +59,7 @@ const BlogPost = () => {
                     {(post && !loading && (
                         <div>
                             <h1 className="display-2 text-center">{post.title}</h1>
-                            <i style={styles.postMetada}> {String(post.dateCreated)} by {post.author}</i>
+                            <i style={styles.postMetada}> {String(post.dateCreated.toLocaleDateString("en-US").toString())} by {post.author} (updated on {post.dateUpdated.toLocaleDateString("en-US").toString()} )</i>
                             <ReactMarkdown children={post.content} remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw, rehypeSanitize, rehypeHighlight]}/>
                         </div>
                     )) || <Skeleton enableAnimation={true} animation={"wave"} count={6} height={35}/>}
