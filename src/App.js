@@ -7,6 +7,7 @@ import {Blog} from "./components/blog/Blog";
 import BlogPost from "./components/blog/BlogPost";
 import {OidcProvider} from "@axa-fr/react-oidc";
 import {Loading} from "./components/misc/Loading";
+import Editor from "./components/blog/Editor";
 
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
                     <Route path="/" exact element={<Home/>}/>
                     <Route path="/blog" exact element={<Blog/>}/>
                     <Route path="/blog/:id" element={<BlogPost/>}/>
+                    <Route path="/editor" element={<Editor/>}/>
 
                 </Routes>
             </OidcProvider>

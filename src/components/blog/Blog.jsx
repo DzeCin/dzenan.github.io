@@ -23,7 +23,7 @@ const Blog = (props) => {
 
     let callbackGetPosts = function (error, data, response) {
         if (error) {
-            console.error(error);
+            setLoading(false)
         } else if (data.length === 0) {
             setLoading(false)
         } else {
@@ -49,7 +49,7 @@ const Blog = (props) => {
     return (
         <div style={{minHeight: 'calc(100vh - 11em)'}} className="container-lg mt-5 bg-blue">
             <p className="h1 text-center">Blog</p>
-            {isAdmin && <Button>New Post</Button>}
+            {isAdmin && <NavLink to={"/editor"}><Button>New Post</Button></NavLink>}
             <Form.Group style={{margin: "2%"}}>
                 <Form.Control type="search" id="form1" placeholder={"Search a post by tags."}/>
 

@@ -27,13 +27,10 @@ const BlogPost = () => {
         const [loading, setLoading] = useState(true)
 
         let callback = function (error, data, response) {
-            if (response.status === 404) {
+            if (response.status === 404 || error) {
                 setPost(null)
-
-            } else if (error){
-                console.error(error)
-            }
-            else {
+                setLoading(false)
+            } else {
                 let postResp = new PostClass(data.id, data.header, data.title, data.author, data.content, data.tags, data.dateCreated, data.dateUpdated)
                 setLoading(false)
                 setPost(postResp)
@@ -63,6 +60,7 @@ const BlogPost = () => {
                             <ReactMarkdown children={post.content} remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw, rehypeSanitize, rehypeHighlight]}/>
                         </div>
                     )) || <Skeleton enableAnimation={true} animation={"wave"} count={6} height={35}/>}
+
                     {(!post && !loading && <h1 className="display-1 text-center">404 - Page not found</h1>)}
                 </div>
             </Container>
