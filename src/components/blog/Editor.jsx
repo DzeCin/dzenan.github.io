@@ -4,6 +4,7 @@ import MDEditor from "@uiw/react-md-editor";
 import {Button, Col, Container, Form, InputGroup, Toast, ToastContainer} from "react-bootstrap";
 import {useOidcIdToken} from "@axa-fr/react-oidc";
 import {roles} from "../../auth/config";
+import {ApiClient, Post, PostsApi} from "js-api-blog-client";
 
 
 const MarkdownEditor = () => {
@@ -26,38 +27,30 @@ const MarkdownEditor = () => {
 
 const Editor = () => {
 
+    const mdMermaid = "Type your markdown here"
+    let token = useOidcIdToken()
 
+    let cal = function (error, data, response) {
+        if (response.status === 401) {
+            setNotification({
+                show: true,
+                variant: "Danger",
+                msg: "You are not authorized to do this !",
+                hour: getCurrentHour()
+            })
+        } else if (response.status === 200) {
+            setNotification({show: true, variant: "Success", msg: "Post created successfully", hour: getCurrentHour()})
 
-    const mdMermaid = `The following are some examples of the diagrams, charts and graphs that can be made using Mermaid and the Markdown-inspired text specific to it. 
+        } else {
+            setNotification({
+                show: true,
+                variant: "Danger",
+                msg: "An unexpected error happened.",
+                hour: getCurrentHour()
+            })
 
-\`\`\`mermaid
-graph TD
-A[Hard] -->|Text| B(Round)
-B --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
-\`\`\`
-
-\`\`\`mermaid
-sequenceDiagram
-Alice->>John: Hello John, how are you?
-loop Healthcheck
-    John->>John: Fight against hypochondria
-end
-Note right of John: Rational thoughts!
-John-->>Alice: Great!
-John->>Bob: How about you?
-Bob-->>John: Jolly good!
-\`\`\`
-`;
-
-    function getCurrentHour() {
-        const date = new Date();
-        const seconds = date.getSeconds();
-        const minutes = date.getMinutes();
-        const hours = date.getHours();
-        return ('0' + hours).slice(-2) + ":" + ('0' + minutes).slice(-2) + ":" + ('0' + seconds).slice(-2)
-    }
+        }
+    };
 
     const addPost = () => {
         validateSummary()
@@ -70,8 +63,33 @@ Bob-->>John: Jolly good!
                 msg: "One or more inputs are invalid, please fix it.",
                 hour: getCurrentHour()
             })
+        } else {
+
+            let apiClient = new ApiClient()
+            apiClient.basePath = process.env.REACT_APP_BLOG_API_URL
+            let oAuth = apiClient.authentications['oAuth'];
+            oAuth.accessToken = token.idToken;
+            console.log(token)
+            let api = new PostsApi(apiClient)
+            let opts = {
+                'body': new Post("", title, tags, summary, value, token.idTokenPayload.name, "", "") // Post | Post to add in json format
+            };
+
+            api.addPost(opts, cal);
+
         }
     }
+
+
+
+    function getCurrentHour() {
+        const date = new Date();
+        const seconds = date.getSeconds();
+        const minutes = date.getMinutes();
+        const hours = date.getHours();
+        return ('0' + hours).slice(-2) + ":" + ('0' + minutes).slice(-2) + ":" + ('0' + seconds).slice(-2)
+    }
+
 
     const [value, setValue] = useState(mdMermaid)
     const [title, setTitle] = useState("")

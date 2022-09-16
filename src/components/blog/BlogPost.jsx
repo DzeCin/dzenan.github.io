@@ -6,7 +6,6 @@ import {Container} from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
 import Skeleton from "react-loading-skeleton";
 import remarkGfm from 'remark-gfm'
-import rehypeRaw from "rehype-raw";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSanitize from "rehype-sanitize";
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -57,7 +56,7 @@ const BlogPost = () => {
                         <div>
                             <h1 className="display-2 text-center">{post.title}</h1>
                             <i style={styles.postMetada}> {String(post.dateCreated.toLocaleDateString("en-US").toString())} by {post.author} (updated on {post.dateUpdated.toLocaleDateString("en-US").toString()} )</i>
-                            <ReactMarkdown children={post.content} remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw, rehypeSanitize, rehypeHighlight]}/>
+                            <ReactMarkdown children={post.content} remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize, rehypeHighlight]}/>
                         </div>
                     )) || <Skeleton enableAnimation={true} animation={"wave"} count={6} height={35}/>}
 
