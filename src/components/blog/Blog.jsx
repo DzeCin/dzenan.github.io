@@ -88,6 +88,7 @@ const BlogCard = (
             id, tags, dateCreated, dateUpdated, title, header, author
         }
     ) => {
+        let token = useOidcIdToken()
 
         function getCurrentHour() {
             const date = new Date();
@@ -118,6 +119,7 @@ const BlogCard = (
                 })
             } else if (response.status === 200) {
                 setNotification({show: true, variant: "Success", msg: "Post successfully deleted", hour: getCurrentHour()})
+                window.location.reload()
 
             } else {
                 setNotification({
@@ -135,14 +137,15 @@ const BlogCard = (
             let apiClient = new ApiClient()
             apiClient.basePath = process.env.REACT_APP_BLOG_API_URL
             let oAuth = apiClient.authentications['oAuth'];
-            oAuth.accessToken = '';
+            oAuth.accessToken = token.idToken;
             let api = new PostsApi(apiClient)
             api.deletePost(id, cal);
+
         }
 
         return (
             <>
-                <ToastContainer position={"top-end"} className={"position-fixed"}>
+                <ToastContainer style={{zIndex: 1000}}  className={"position-fixed bottom-0 end-0 p-3"}>
                     <Toast show={notification.show} onClose={closeNotification} delay={5000} autohide
                            bg={notification.variant.toLowerCase()}>
                         <Toast.Header>

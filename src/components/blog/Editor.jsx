@@ -5,6 +5,7 @@ import {Button, Col, Container, Form, InputGroup, Toast, ToastContainer} from "r
 import {useOidcIdToken} from "@axa-fr/react-oidc";
 import {roles} from "../../auth/config";
 import {ApiClient, Post, PostsApi} from "js-api-blog-client";
+import {useNavigate} from "react-router";
 
 
 const MarkdownEditor = () => {
@@ -29,6 +30,7 @@ const Editor = () => {
 
     const mdMermaid = "Type your markdown here"
     let token = useOidcIdToken()
+    let navigate = useNavigate()
 
     let cal = function (error, data, response) {
         if (response.status === 401) {
@@ -40,6 +42,8 @@ const Editor = () => {
             })
         } else if (response.status === 200) {
             setNotification({show: true, variant: "Success", msg: "Post created successfully", hour: getCurrentHour()})
+            console.log(response.body.id)
+            navigate("/blog/" + response.body.id)
 
         } else {
             setNotification({
