@@ -67,7 +67,7 @@ const about = {
     imageLink: require("../assets/img/dzenan.png"),
     imageSize: "50%",
     message:
-        "My name is Dzenan Cindrak. I’m a graduate of 2022 from Telecom SudParis (Institut Polytechnique de Paris) with a MSc in Architecture and Intelligence for networks. I'm passionate about DevOps, Cloud and Networking, and I would like to pursue as a DevOps Engineer/SRE. In my free time I like discovering and learning new technologies and coding open source projects.",
+        "My name is Dzenan Cindrak. I’m a graduate of 2022 from Telecom SudParis (Institut Polytechnique de Paris) with a MSc in Architecture and Intelligence for networks. I'm passionate about DevOps, Kubernetes, Cloud and Networking. I am currently working as a DevOps engineer. In my free time I like discovering and learning new technologies and coding open source projects.",
     resume: "https://www.canva.com/design/DAE71WBdDmo/JndfUaE5Ad2oZ1GOjvV4xA/view?utm_content=DAE71WBdDmo&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink",
 };
 
