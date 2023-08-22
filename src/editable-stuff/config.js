@@ -133,6 +133,11 @@ const experiences = {
             country: 'CNS Communications - Paris & Lyon, France',
             date: 'October 2021 – October 2022',
         },
+        {
+            role: 'Vice President',
+            country: 'MiNET - Paris & Lyon, France',
+            date: 'September 2019 – September 2021',
+        },
     ]
 }
 
